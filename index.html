@@ -1,269 +1,283 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verify your code</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify your code</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f5f5f5;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    }
+      body {
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
 
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 40px 32px;
-      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-      text-align: center;
-    }
+      .card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 40px 32px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        text-align: center;
+      }
 
-    h1 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin-bottom: 28px;
-    }
+      h1 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 28px;
+      }
 
-    .otp-boxes {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      cursor: text;
-    }
+      .otp-boxes {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        cursor: text;
+      }
 
-    .otp-box {
-      width: 48px;
-      height: 60px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #1a1a1a;
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .otp-box.filled {
-      border-color: #007aff;
-      color: #007aff;
-    }
-
-    .otp-box.filled-web {
-      border-color: #34c759;
-      color: #34c759;
-    }
-
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #888;
-      margin-bottom: 12px;
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid #eee;
-      margin: 32px 0;
-    }
-
-    .web-otp-status {
-      margin-top: 12px;
-      font-size: 0.8rem;
-      color: #888;
-      min-height: 1.2em;
-    }
-
-    .log-section {
-      margin-top: 32px;
-      text-align: left;
-    }
-
-    .log-section .section-label {
-      margin-bottom: 8px;
-    }
-
-    #log {
-      width: 100%;
-      height: 180px;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      font-family: ui-monospace, "SF Mono", Menlo, monospace;
-      font-size: 0.72rem;
-      line-height: 1.5;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 12px;
-      resize: vertical;
-      white-space: pre;
-      overflow-y: auto;
-    }
-
-    @media (max-width: 379px) {
       .otp-box {
-        width: 40px;
-        font-size: 1.5rem;
+        width: 48px;
+        height: 60px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
       }
-    }
 
-    /* visually hidden but present in DOM for autofill */
-    #otp-hidden {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-      overflow: hidden;
-      width: 1px;
-      height: 1px;
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>Enter verification code</h1>
+      .otp-box.filled {
+        border-color: #007aff;
+        color: #007aff;
+      }
 
-    <p class="section-label">Safari autofill</p>
+      .otp-box.filled-web {
+        border-color: #34c759;
+        color: #34c759;
+      }
 
-    <input
-      id="otp-hidden"
-      type="text"
-      inputmode="numeric"
-      autocomplete="one-time-code"
-      maxlength="6"
-      aria-label="One-time passcode (Safari autofill)"
-    />
+      .section-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #888;
+        margin-bottom: 12px;
+      }
 
-    <div class="otp-boxes" id="otp-boxes">
-      <div class="otp-box" id="d0"></div>
-      <div class="otp-box" id="d1"></div>
-      <div class="otp-box" id="d2"></div>
-      <div class="otp-box" id="d3"></div>
-      <div class="otp-box" id="d4"></div>
-      <div class="otp-box" id="d5"></div>
+      .divider {
+        border: none;
+        border-top: 1px solid #eee;
+        margin: 32px 0;
+      }
+
+      .web-otp-status {
+        margin-top: 12px;
+        font-size: 0.8rem;
+        color: #888;
+        min-height: 1.2em;
+      }
+
+      .log-section {
+        margin-top: 32px;
+        text-align: left;
+      }
+
+      .log-section .section-label {
+        margin-bottom: 8px;
+      }
+
+      #log {
+        width: 100%;
+        height: 180px;
+        background: #1a1a1a;
+        color: #e0e0e0;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.72rem;
+        line-height: 1.5;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 12px;
+        resize: vertical;
+        white-space: pre;
+        overflow-y: auto;
+      }
+
+      @media (max-width: 379px) {
+        .otp-box {
+          width: 40px;
+          font-size: 1.5rem;
+        }
+      }
+
+      /* visually hidden but present in DOM for autofill */
+      #otp-hidden {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Enter verification code</h1>
+
+      <p class="section-label">Safari autofill</p>
+
+      <input
+        id="otp-hidden"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="6"
+        aria-label="One-time passcode (Safari autofill)"
+      />
+
+      <div class="otp-boxes" id="otp-boxes">
+        <div class="otp-box" id="d0"></div>
+        <div class="otp-box" id="d1"></div>
+        <div class="otp-box" id="d2"></div>
+        <div class="otp-box" id="d3"></div>
+        <div class="otp-box" id="d4"></div>
+        <div class="otp-box" id="d5"></div>
+      </div>
+
+      <hr class="divider" />
+
+      <p class="section-label">Web OTP API</p>
+
+      <div
+        class="otp-boxes"
+        id="web-otp-boxes"
+        aria-label="One-time passcode (Web OTP API)"
+      >
+        <div class="otp-box" id="w0"></div>
+        <div class="otp-box" id="w1"></div>
+        <div class="otp-box" id="w2"></div>
+        <div class="otp-box" id="w3"></div>
+        <div class="otp-box" id="w4"></div>
+        <div class="otp-box" id="w5"></div>
+      </div>
+
+      <p class="web-otp-status" id="web-otp-status">Checking support…</p>
+
+      <div class="log-section">
+        <p class="section-label">Debug log</p>
+        <textarea id="log" readonly></textarea>
+      </div>
     </div>
 
-    <hr class="divider" />
-
-    <p class="section-label">Web OTP API</p>
-
-    <div class="otp-boxes" id="web-otp-boxes" aria-label="One-time passcode (Web OTP API)">
-      <div class="otp-box" id="w0"></div>
-      <div class="otp-box" id="w1"></div>
-      <div class="otp-box" id="w2"></div>
-      <div class="otp-box" id="w3"></div>
-      <div class="otp-box" id="w4"></div>
-      <div class="otp-box" id="w5"></div>
-    </div>
-
-    <p class="web-otp-status" id="web-otp-status">Checking support…</p>
-
-    <div class="log-section">
-      <p class="section-label">Debug log</p>
-      <textarea id="log" readonly></textarea>
-    </div>
-  </div>
-
-  <script>
-    // --- Debug log ---
-    const logEl = document.getElementById('log');
-    function log(msg) {
-      const ts = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      logEl.value += '[' + ts + '] ' + msg + '\n';
-      logEl.scrollTop = logEl.scrollHeight;
-    }
-
-    // Capture unhandled errors
-    window.addEventListener('error', function (e) {
-      log('UNCAUGHT ERROR: ' + e.message + ' (' + e.filename + ':' + e.lineno + ')');
-    });
-    window.addEventListener('unhandledrejection', function (e) {
-      log('UNHANDLED REJECTION: ' + (e.reason?.message || e.reason));
-    });
-
-    log('Page loaded');
-    log('User agent: ' + navigator.userAgent);
-
-    // --- Safari autofill ---
-    const hiddenInput = document.getElementById('otp-hidden');
-    log('Safari autofill: hidden input found: ' + !!hiddenInput);
-    log('Safari autofill: autocomplete="' + hiddenInput.getAttribute('autocomplete') + '"');
-
-    function distributeDigits(value) {
-      const digits = value.replace(/\D/g, '').slice(0, 6).split('');
-      for (let i = 0; i < 6; i++) {
-        const box = document.getElementById('d' + i);
-        box.textContent = digits[i] ?? '';
-        box.classList.toggle('filled', !!digits[i]);
-      }
-    }
-
-    hiddenInput.addEventListener('focus', function () {
-      log('Safari input: focused');
-    });
-
-    hiddenInput.addEventListener('input', function () {
-      this.value = this.value.replace(/\D/g, '').slice(0, 6);
-      log('Safari input: value="' + this.value + '"');
-      distributeDigits(this.value);
-    });
-
-    hiddenInput.addEventListener('paste', function (e) {
-      e.preventDefault();
-      const pasted = (e.clipboardData || window.clipboardData).getData('text');
-      this.value = pasted.replace(/\D/g, '').slice(0, 6);
-      log('Safari input: pasted → value="' + this.value + '"');
-      distributeDigits(this.value);
-    });
-
-    document.getElementById('otp-boxes').addEventListener('click', function () {
-      log('Safari boxes: clicked, focusing hidden input');
-      hiddenInput.focus();
-    });
-
-    // --- Web OTP API ---
-    function distributeWebDigits(value) {
-      const digits = value.replace(/\D/g, '').slice(0, 6).split('');
-      for (let i = 0; i < 6; i++) {
-        const box = document.getElementById('w' + i);
-        box.textContent = digits[i] ?? '';
-        box.classList.toggle('filled-web', !!digits[i]);
-      }
-    }
-
-    const statusEl = document.getElementById('web-otp-status');
-
-    log('Web OTP: OTPCredential in window = ' + ('OTPCredential' in window));
-
-    if ('OTPCredential' in window) {
-      log('Web OTP: navigator.credentials available = ' + !!navigator.credentials);
-      statusEl.textContent = 'Waiting for SMS…';
-      const ac = new AbortController();
-      log('Web OTP: calling navigator.credentials.get(...)');
-      navigator.credentials.get({ otp: { transport: ['sms'] }, signal: ac.signal })
-        .then(otp => {
-          log('Web OTP: SUCCESS — code="' + otp.code + '" type="' + otp.type + '"');
-          distributeWebDigits(otp.code);
-          statusEl.textContent = 'Received via Web OTP API';
-        })
-        .catch(err => {
-          log('Web OTP: ERROR — name="' + err.name + '" message="' + err.message + '"');
-          if (err.name !== 'AbortError') {
-            statusEl.textContent = 'Web OTP error: ' + err.message;
-          }
+    <script>
+      // --- Debug log ---
+      const logEl = document.getElementById("log");
+      function log(msg) {
+        const ts = new Date().toLocaleTimeString([], {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
         });
-    } else {
-      statusEl.textContent = 'Web OTP API not supported in this browser';
-      log('Web OTP: API not supported — skipping');
-    }
-  </script>
-</body>
+        logEl.value += "[" + ts + "] " + msg + "\n";
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      window.addEventListener("error", function (e) {
+        log("UNCAUGHT ERROR: " + e.message + " (" + e.filename + ":" + e.lineno + ")");
+      });
+      window.addEventListener("unhandledrejection", function (e) {
+        log("UNHANDLED REJECTION: " + (e.reason?.message || e.reason));
+      });
+
+      log("Page loaded");
+      log("User agent: " + navigator.userAgent);
+
+      // --- Safari autofill ---
+      const hiddenInput = document.getElementById("otp-hidden");
+      log('Safari: hidden input found=' + !!hiddenInput + ' autocomplete="' + hiddenInput.getAttribute("autocomplete") + '"');
+
+      function distributeDigits(value) {
+        const digits = value.replace(/\D/g, "").slice(0, 6).split("");
+        for (let i = 0; i < 6; i++) {
+          const box = document.getElementById("d" + i);
+          box.textContent = digits[i] ?? "";
+          box.classList.toggle("filled", !!digits[i]);
+        }
+      }
+
+      hiddenInput.addEventListener("focus", function () { log("Safari input: focused"); });
+
+      hiddenInput.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 6);
+        log('Safari input: value="' + this.value + '"');
+        distributeDigits(this.value);
+      });
+
+      hiddenInput.addEventListener("paste", function (e) {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData("text");
+        this.value = pasted.replace(/\D/g, "").slice(0, 6);
+        log('Safari input: pasted → value="' + this.value + '"');
+        distributeDigits(this.value);
+      });
+
+      document.getElementById("otp-boxes").addEventListener("click", function () {
+        log("Safari boxes: clicked, focusing hidden input");
+        hiddenInput.focus();
+      });
+
+      // --- Web OTP API ---
+      function distributeWebDigits(value) {
+        const digits = value.replace(/\D/g, "").slice(0, 6).split("");
+        for (let i = 0; i < 6; i++) {
+          const box = document.getElementById("w" + i);
+          box.textContent = digits[i] ?? "";
+          box.classList.toggle("filled-web", !!digits[i]);
+        }
+      }
+
+      const statusEl = document.getElementById("web-otp-status");
+      log("Web OTP: OTPCredential in window = " + ("OTPCredential" in window));
+
+      if ("OTPCredential" in window) {
+        log("Web OTP: navigator.credentials available = " + !!navigator.credentials);
+        statusEl.textContent = "Waiting for SMS…";
+        const ac = new AbortController();
+        log("Web OTP: calling navigator.credentials.get(...)");
+        navigator.credentials
+          .get({ otp: { transport: ["sms"] }, signal: ac.signal })
+          .then((otp) => {
+            log('Web OTP: SUCCESS — code="' + otp.code + '" type="' + otp.type + '"');
+            distributeWebDigits(otp.code);
+            statusEl.textContent = "Received via Web OTP API";
+          })
+          .catch((err) => {
+            log('Web OTP: ERROR — name="' + err.name + '" message="' + err.message + '"');
+            if (err.name !== "AbortError") {
+              statusEl.textContent = "Web OTP error: " + err.message;
+            }
+          });
+      } else {
+        statusEl.textContent = "Web OTP API not supported in this browser";
+        log("Web OTP: API not supported — skipping");
+      }
+    </script>
+  </body>
 </html>
