@@ -7,23 +7,10 @@
     <title>otp</title>
   </head>
   <body>
-    <!-- <div id="root"></div> -->
-    <!-- <script type="module" src="/src/main.tsx"></script> -->
-    <form action="">
-      <input
-        type="text"
-        inputmode="numeric"
-        is="web-otp"
-        id="otp-input"
-        class="mdc-text-field__input"
-        autocomplete="one-time-code"
-        pattern="^([0-9]+)$"
-        required
-      />
-      <button id="otp-button">click</button>
-    </form>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
-  <script>
+  <!-- <script>
     if ("OTPCredential" in window) {
       console.log("Web OTP API is supported");
 
@@ -68,5 +55,5 @@
         });
       }
     }
-  </script>
+  </script> -->
 </html>

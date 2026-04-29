@@ -29,13 +29,22 @@ function App() {
 
   return (
     <div style={{ padding: 16, fontFamily: "monospace", maxWidth: 600 }}>
-      <input
-        type="text"
-        autoComplete="one-time-code"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        style={{ fontSize: 24, width: "100%", marginBottom: 16 }}
-      />
+      <form action="">
+        <input
+          type="text"
+          inputMode="numeric"
+          is="web-otp"
+          id="otp-input"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          style={{ fontSize: 24, width: "100%", marginBottom: 16 }}
+          autoComplete="one-time-code"
+          pattern="^([0-9]+)$"
+          required
+        />
+        <button id="otp-button">click</button>
+      </form>
+
       <textarea
         ref={textareaRef}
         readOnly
